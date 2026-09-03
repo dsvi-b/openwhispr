@@ -1,6 +1,7 @@
 // Chromium picks the display backend before JS runs, so appendSwitch is too
 // late — the flag has to come from a relaunch.
 const { XWAYLAND_FLAG, shouldForceXWayland } = require("./src/helpers/xwayland");
+const { shouldQuitWhenAllWindowsClosed } = require("./src/helpers/appLifecyclePolicy");
 
 if (shouldForceXWayland(process.argv)) {
   const { spawn } = require("child_process");
@@ -1844,12 +1845,9 @@ if (gotSingleInstanceLock) {
     });
 
   app.on("window-all-closed", () => {
-    // Don't quit on macOS when all windows are closed
-    // The app should stay in the dock/menu bar
-    if (process.platform !== "darwin") {
+    if (shouldQuitWhenAllWindowsClosed(process.platform)) {
       app.quit();
     }
-    // On macOS, keep the app running even without windows
   });
 
   app.on("browser-window-focus", (event, window) => {

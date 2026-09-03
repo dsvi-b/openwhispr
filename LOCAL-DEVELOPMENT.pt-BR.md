@@ -6,7 +6,7 @@ servem apenas para facilitar o desenvolvimento local no computador do Davi.
 ## Onde está o código
 
 ```text
-~/Projects/OpenWhispr
+~/Projetos/OpenWhispr
 ```
 
 O GitHub do fork é <https://github.com/dsvi-b/openwhispr>. O repositório
@@ -15,7 +15,7 @@ original continua configurado como `upstream`.
 ## Depois de editar a interface
 
 ```bash
-cd ~/Projects/OpenWhispr
+cd ~/Projetos/OpenWhispr
 ./scripts/build-local-linux.sh
 systemctl --user restart openwhispr-fork.service
 ```
@@ -26,14 +26,29 @@ suíte completa de testes automaticamente.
 ## Abrir manualmente
 
 ```bash
-cd ~/Projects/OpenWhispr
+cd ~/Projetos/OpenWhispr
 ./scripts/run-local-linux.sh
 ```
+
+## Refazer a configuração pessoal
+
+Se a configuração inicial voltar a aparecer, pare o aplicativo, execute o
+configurador e abra-o novamente:
+
+```bash
+systemctl --user stop openwhispr-fork.service
+cd ~/Projetos/OpenWhispr
+./node_modules/electron/dist/electron scripts/configure-personal-groq.js
+systemctl --user start openwhispr-fork.service
+```
+
+O configurador seleciona Groq, desativa modelos locais e usa a tecla Copilot.
+Ele não contém nem copia a chave da API para o repositório.
 
 ## Atualizar a partir do projeto original
 
 ```bash
-cd ~/Projects/OpenWhispr
+cd ~/Projetos/OpenWhispr
 git fetch upstream
 git switch main
 git merge upstream/main
